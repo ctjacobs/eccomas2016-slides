@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>On the validity of tidal turbine array configurations obtained from steady-state adjoint optimisation</title>
+
+		<meta name="description" content="">
+		<meta name="author" content="Christian T. Jacobs, Matthew D. Piggott, Stephan C. Kramer, Simon W. Funke">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>On the validity of tidal turbine array configurations obtained from steady-state adjoint optimisation</h3>
+					<br><font size="5">Christian T. Jacobs<sup>1</sup>, Matthew D. Piggott<sup>1</sup>, Stephan C. Kramer<sup>1</sup>, Simon W. Funke<sup>2</sup></font>
+					<br><font size="3"><sup>1</sup> Department of Earth Science & Engineering, Imperial College London</font>
+					<br><font size="3"><sup>2</sup> Biomedical Computing Department, Simula Research Laboratory</font>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### Motivation
+						   <img style="float: right" src="images/tidal-turbine.png" width="20%">
+						   
+						   <ul style="width: 60%;">
+						      <li>Tidal turbines provide <span style="color:lightgreen;">renewable energy</span>.</li><br>
+						      <li>Their <span style="color:lightgreen;">placement</span> in an <span style="color:lightgreen;">array/farm</span> must be carefully considered to generated optimal amount of <span style="color:lightgreen;">power</span>.</li><br>
+						      <li>Experimental studies often limited to <span style="color:lightgreen;">small-scale</span> domains with <span style="color:lightgreen;">idealised conditions</span>.</li><br>
+						      <li>Numerical <span style="color:lightgreen;">adjoint optimisation</span> increasingly popular.</li><br>
+                     </ul><br>
+                     <font size="2">Image by Myers and Bahaj (2009), <i>"Near wake properties of horizontal axis marine current turbines"</i>, Proceedings of the 8th European Wave and Tidal Energy Conference.</font>
+					</script>
+				</section>
+
+
+				<section data-markdown>
+					<script type="text/template">
+					   ### Adjoint-based optimisation
+					   
+					   * Example: Optimisation of <span style="color:lightgreen;">256 turbines</span> near Pentland Firth.
+					   * Images from Funke et al. (2014), *"Tidal turbine array optimisation using the adjoint approach".*<br>
+					   <img align="left" src="images/pentland-firth-initial.png" width="40%">
+						<img align="right" src="images/pentland-firth-final.png" width="40%"><br>
+						<img align="left" src="images/pentland-firth-streamline-flow.png" width="40%">
+						<img align="right" src="images/pentland-firth-power.png" width="40%">
+					</script>
+				</section>
+				
+				<section data-markdown>
+					<script type="text/template">
+						### Adjoint-based optimisation
+						<img align="center" src="images/otf.png" height="400px"><br>
+						<align="right"><font size="4">Image from opentidalfarm.org.</font></align>
+					</script>
+				</section>
+
+				
+				<section data-markdown>
+					<script type="text/template">
+						### Challenges
+						
+						* Adjoint-based optimisation is <span style="color:lightgreen;">computationally demanding</span>. Requires both forward and adjoint run for each iteration.
+						
+						* Most work has focussed on <span style="color:lightgreen;">steady-state</span> (or multi-steady-state) computations.
+						
+						* Very <span style="color:lightgreen;">high viscosity</span> used to ensure solution exists, but turbine wakes are highly diffused and no turbulence resolved.
+						
+						* Are the turbine placements predicted by steady-state adjoint modelling <span style="color:lightgreen;">valid</span> in reality?
+					</script>
+				</section>
+				
+
+				<section data-markdown>
+					<script type="text/template">
+						### Numerical model
+						
+						* OpenTidalFarm solves the <span style="color:lightgreen;">shallow water equations</span> with the <span style="color:lightgreen;">finite element method</span>.
+						
+						* Uses <span style="color:lightgreen;">Dolfin-Adjoint</span> to automatically annotate forward model and derive adjoint model.
+						
+						* Optimisation performed with <span style="color:lightgreen;">L-BFGS-B</span> algorithm.
+						
+						* Smagorinsky <span style="color:lightgreen;">LES model</span> for transient runs.
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### Simulation setup
+						* Rectangular domain, <span style="color:lightgreen;">3 x 1 km<sup>2</sup></span>, with a depth of 50 m.
+						
+						* <span style="color:lightgreen;">15 turbines</span> (20 m in diameter) placed in <span style="color:lightgreen;">4 simple man-made configurations</span> by Divett et al. (2013).
+						
+						* <span style="color:lightgreen;">Steady flow of 2 ms<sup>-1</sup></span>, left-to-right.
+						
+						* Kinematic viscosity (steady-state): 1 m<sup>2</sup>s<sup>-1</sup>
+						
+						* Kinematic viscosity (transient): 10<sup>-6</sup> m<sup>2</sup>s<sup>-1</sup>
+					</script>
+				</section>
+				
+				<section data-markdown>
+					<script type="text/template">
+						### Configurations
+						<img src="images/configurations.png">
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### Steady-state simulations: Centred
+						* The poorest choice. <span style="color:lightgreen;">~18.8 MW</span> generated.
+						
+						* All downstream turbines situated in the wakes/separated flow regions of the ones upstream - <span style="color:lightgreen;">large velocity deficit</span>.
+						<center><img src="images/steady-centred.png" width="70%"></center>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### Steady-state simulations: Offset
+						* ~4% more power generated: <span style="color:lightgreen;">~19.5 MW</span>.
+						
+						* Allows shipping traffic to pass without much influence on power generation.
+						<center><img src="images/steady-offset.png" width="70%"></center>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### Steady-state simulations: Larger row spacing
+						* ~23% more power generated: <span style="color:lightgreen;">~23.2 MW</span>.
+						
+						* Larger spacing allows wake to recover before interacting with turbines downstream.
+						<center><img src="images/steady-larger-spacing.png" width="70%"></center>
+					</script>
+				</section>
+				
+				<section data-markdown>
+					<script type="text/template">
+						### Steady-state simulations: Staggered
+						* The best man-made configuration: ~75% more power generated: <span style="color:lightgreen;">~32.9 MW</span>.
+						
+						* Accelerated region of flow around the first row interacts with the second (staggered) row behind it - more power extracted.
+						<center><img src="images/steady-staggered.png" width="70%"></center>
+					</script>
+				</section>
+				
+				<section data-markdown>
+					<script type="text/template">
+						### Optimised configuration
+						* Turbine positions optimised with respect to power.
+						<img src="images/power-equation.png">
+						* Turbines must be 1.5*d* apart, contained in a 2000 x 750 m<sup>2</sup> region.
+						
+						* Staggered configuration used as initial condition.
+						
+						* Steady-state only, as per existing works.
+						
+						* Optimisation performed for <span style="color:lightgreen;">100 iterations</span>.
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### Optimisation iterations
+						<img src="images/optimisation-iterations.png" height="500px">
+					</script>
+				</section>
+				
+				<section data-markdown>
+					<script type="text/template">
+						### Optimised configuration
+						
+						* Turbines re-positioned such that the effect of <span style="color:lightgreen;">wakes</span> from other turbines is <span style="color:lightgreen;">minimised</span>.
+						
+						* More power harnessed from regions of <span style="color:lightgreen;">accelerated flow</span>, so some turbines are packed <span style="color:lightgreen;">closer together</span> in the cross-flow direction.
+						<center><img src="images/configuration-optimised.png"></center>
+					</script>
+				</section>
+				
+				<section data-markdown>
+					<script type="text/template">
+						### Steady-state simulations: Optimised
+						* Significant improvement over all man-made configurations.
+						
+						* ~156% more power generated (compared to centred): <span style="color:lightgreen;">~48.12 MW</span>
+						<center><img src="images/steady-optimised.png" width="70%"></center>
+					</script>
+				</section>
+
+
+				<section data-markdown>
+					<script type="text/template">
+						### Power curves
+						<img src="images/power.png" height="500px">
+					</script>
+				</section>
+
+
+				<section data-markdown>
+					<script type="text/template">
+						### Transient simulations: Centred
+						* Longer, sharper regions of separation - <span style="color:lightgreen;">stronger velocity deficit</span>.
+						
+						* Some downstream turbulent eddy shedding - <span style="color:lightgreen;">oscillations in power relatively small</span>.
+						<center><img src="images/transient-centred.png" width="70%"></center>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### Transient simulations: Optimised
+						* Optimised array <span style="color:lightgreen;">out-performed</span> all man-made configurations (<span style="color:lightgreen;">again</span>).
+						
+						* Wakes <span style="color:lightgreen;">entrained</span> into regions of acceleration around downstream turbines, instead of immersing them in the region of low flow speed.
+						* Turbulent eddies shed much further downstream.
+						<center><img src="images/transient-optimised.png" width="70%"></center>
+					</script>
+				</section>
+
+
+
+				<section data-markdown>
+               <script type="text/template">
+						### Conclusions
+						
+						* Adjoint optimisation can greatly <span style="color:lightgreen;">improve power extraction</span> potential.
+						
+						* Compared to steady-state runs, <span style="color:lightgreen;">velocity deficit</span> is <span style="color:lightgreen;">stronger</span> in reality.
+						
+						* The transient & steady-state <span style="color:lightgreen;">power curves are qualitatively similar</span>.
+						
+						* Horizontal LES (<span style="color:lightgreen;">HLES</span>) or <span style="color:lightgreen;">3D</span> LES turbulence models should be used in future work.
+					</script>
+				</section>
+
+				<section data-markdown>
+               <script type="text/template">
+						### Resources
+						* OpenTidalFarm: <span style="color:lightgreen;">www.opentidalfarm.org</span>
+						
+						* Dolfin-Adjoint: <span style="color:lightgreen;">www.dolfin-adjoint.org</span>
+						
+						* Conference paper: ???
+
+						* Slides: ???
+					</script>
+				</section>
+				
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
